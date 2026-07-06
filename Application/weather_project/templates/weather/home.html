@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Application</title>
+</head>
+
+<body>
+
+<h1>Weather Application</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">
+        Get Weather
+    </button>
+</form>
+
+<h2>you searched for :</h2>
+
+{% if weather_data %}
+
+<hr>
+
+<h1>{{ weather_data.city }}</h1>
+
+<p>Country : {{ weather_data.country }}</p>
+
+<p>Temperature: {{ weather_data.temp }} °C</p>
+
+<p>Feels_like: {{ weather_data.feels_like }} °C</p>
+
+<p>Pressure: {{ weather_data.pressure }} hPa</p>
+
+<p>Humidity: {{ weather_data.humidity }} %</p>
+
+<p>Wind: {{ weather_data.wind }} m/s</p>
+
+<p>Description: {{ weather_data.description }}</p>
+
+<img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png">
+
+{% endif %}
+
+</body>
+</html>
