@@ -1,82 +1,133 @@
 import tkinter as tk
-from tkinter import ttk,messagebox,simpledialog
+from tkinter import ttk, messagebox, simpledialog
 from bank import Bank
 
 
 class BankGUI:
-    def __init__(self):
-        self.root=root
-        self.bank=Bank()
+    def __init__(self, root):
+        self.root = root
+        self.bank = Bank()
         self.login()
+
     def clear(self):
         for w in self.root.winfo_children():
             w.destroy()
 
+    # ---------------- LOGIN ----------------
     def login(self):
         self.clear()
-        self.root.title("Login")
-        tk.Label(self.root,text="UserName").pack()
-        u=tk.Entry(self.root)
-        u.pack
-        tk.label(self.root,text="Pasword").pack
-        p=tk.Entry(self.root,show="*")
-        p.pack()
+        self.root.title("Bank Login")
+        self.root.geometry("400x300")
+        self.root.configure(bg="#f0f0f0")
+
+        frame = tk.Frame(self.root, bg="#f0f0f0")
+        frame.pack(expand=True)
+
+        tk.Label(frame, text="BANK LOGIN",
+                 font=("Arial", 18, "bold"),
+                 bg="#f0f0f0").pack(pady=10)
+
+        tk.Label(frame, text="Username", bg="#f0f0f0").pack()
+        u = tk.Entry(frame)
+        u.pack(pady=5)
+
+        tk.Label(frame, text="Password", bg="#f0f0f0").pack()
+        p = tk.Entry(frame, show="*")
+        p.pack(pady=5)
 
         def go():
-            if u.get()=="admin" and p.get()=="admin123":
+            if u.get() == "admin" and p.get() == "admin123":
                 self.menu()
             else:
-                messagebox.showerror("Error")
-        tk.Button(self.root,text="Login",command=go).pak(pady=10)
+                messagebox.showerror("Error", "Invalid Login")
 
-    def  menu(self):
+        tk.Button(frame, text="Login", bg="green", fg="white",
+                  width=15, command=go).pack(pady=15)
+
+    # ---------------- MENU ----------------
+    def menu(self):
         self.clear()
-        for t,c in [("create",self.create),
-                    ("Deposit",self.deposit),
-                    ("withdraw",self.withdraw),
-                    ("Transfer",self.Transfer),
-                    ("Balance",self.balance),
-                    ("View",self.view),
-                    ("Exit",self.root.destroy)]:
-            tk.Button(self.root,text=t,width=20,command=c).pack(pady=3)
+        self.root.title("Bank Dashboard")
+        self.root.geometry("500x500")
 
+        frame = tk.Frame(self.root)
+        frame.pack(expand=True)
+
+        tk.Label(frame, text="BANK DASHBOARD",
+                 font=("Arial", 18, "bold")).pack(pady=10)
+
+        buttons = [
+            ("Create Account", self.create),
+            ("Deposit", self.deposit),
+            ("Withdraw", self.withdraw),
+            ("Transfer", self.transfer),
+            ("Balance", self.balance),
+            ("View Accounts", self.view),
+            ("Exit", self.root.destroy)
+        ]
+
+        for text, cmd in buttons:
+            tk.Button(frame, text=text, width=25,
+                      bg="lightblue", height=2,
+                      command=cmd).pack(pady=5)
+
+    # ---------------- FEATURES ----------------
     def create(self):
-        n=simpledialog.askstring("","Account No")
-        name=simpledialog.askstring("","Name")
-        b=simpledialog.askfloat("","Initial Balance")
-        messagebox.showinfo("Result","Created" 
-                            if self.bank.create_account(n,name,b)
-                            else "Exist" )
+        n = simpledialog.askstring("Account", "Account No")
+        name = simpledialog.askstring("Account", "Name")
+        b = simpledialog.askfloat("Account", "Initial Balance")
 
+        messagebox.showinfo(
+            "Result",
+            "Created" if self.bank.create_account(n, name, b) else "Exists"
+        )
 
     def deposit(self):
-        n=simpledialog.askstring("","Account No")
-        a=simpledialog.askfloat("","Amount")
-        messagebox.showinfo("Result","Succcess" if self.bank.deposit(n,a)
-                             else "Account Not Found")
+        n = simpledialog.askstring("Deposit", "Account No")
+        a = simpledialog.askfloat("Deposit", "Amount")
+
+        messagebox.showinfo(
+            "Result",
+            "Success" if self.bank.deposit(n, a) else "Failed"
+        )
 
     def withdraw(self):
-        n=simpledialog.askstring("","Account No")
-        a=simpledialog.askfloat("","Amount")
-        messagebox.showinfo("Result","Succcess" if self.bank.withdraw(n,a)
-                             else "Account Not Found")
+        n = simpledialog.askstring("Withdraw", "Account No")
+        a = simpledialog.askfloat("Withdraw", "Amount")
 
-    def Transfer(self):
-        f=simpledialog.askstring("","From account")
-        t=simpledialog.askstring("","To account")
-        a=simpledialog.askfloat("","account to be tansfered")
-        messagebox.showinfo("Result","success"
-        if self.bank.transfer(f,t,a) else "Transfer Failed")
+        messagebox.showinfo(
+            "Result",
+            "Success" if self.bank.withdraw(n, a) else "Failed"
+        )
+
+    def transfer(self):
+        f = simpledialog.askstring("Transfer", "From Account")
+        t = simpledialog.askstring("Transfer", "To Account")
+        a = simpledialog.askfloat("Transfer", "Amount")
+
+        messagebox.showinfo(
+            "Result",
+            "Success" if self.bank.transfer(f, t, a) else "Failed"
+        )
 
     def balance(self):
-        n=simpledialog("","Account No")
-        messagebox.showinfo("Balance",str(self.bank.balance(n)))
+        n = simpledialog.askstring("Balance", "Account No")
+        bal = self.bank.balance(n)
+
+        messagebox.showinfo("Balance", f"{bal}" if bal else "Not Found")
 
     def view(self):
-        w=tk.Toplevel(self.root)
-        tv=ttk.Treeview(w,columns=("A","N","B"),show="headings")
-        for c in ("A","N","B"):
-            tv.heading(c,text=c)
-        for acc in self.bank.account.value():
-            tv.insert("",tk.END,values=acc.get_details())
-            tv.pack(fill="both",example="True")
+        win = tk.Toplevel(self.root)
+        win.title("Accounts")
+        win.geometry("500x300")
+
+        tv = ttk.Treeview(win, columns=("A", "N", "B"), show="headings")
+
+        tv.heading("A", text="Account No")
+        tv.heading("N", text="Name")
+        tv.heading("B", text="Balance")
+
+        tv.pack(fill="both", expand=True)
+
+        for acc in self.bank.get_all_accounts():
+            tv.insert("", "end", values=acc.get_details())

@@ -1,26 +1,10 @@
-import os
 import requests
-from dotenv import load_dotenv
-
-# Load environment variables from .env
-load_dotenv()
-
-# Get API key from .env
-API_KEY = os.getenv("API_KEY")
-
-# Base URL
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 
-def get_weather_data(city):
-    """
-    Fetch weather data for a given city.
-    Returns JSON data if successful, otherwise None.
-    """
+def get_weather(city):
+    API_KEY = "0cad826a84b45dab3343df7cffe57264"
 
-    if not API_KEY:
-        print("Error: API_KEY not found in .env file")
-        return None
+    url = "https://api.openweathermap.org/data/2.5/weather"
 
     params = {
         "q": city,
@@ -28,11 +12,23 @@ def get_weather_data(city):
         "units": "metric"
     }
 
-    try:
-        response = requests.get(BASE_URL, params=params)
-        response.raise_for_status()
-        return response.json()
+    response = requests.get(url, params=params)
 
-    except requests.exceptions.RequestException as e:
-        print("Error:", e)
+    if response.status_code != 200:
         return None
+
+    data = response.json()
+
+    weather = {
+        "city": data["name"],
+        "country": data["sys"]["country"],
+        "temp": data["main"]["temp"],
+        "feels_like": data["main"]["feels_like"],
+        "humidity": data["main"]["humidity"],
+        "pressure": data["main"]["pressure"],
+        "wind": data["wind"]["speed"],
+        "description": data["weather"][0]["description"],
+        "icon": data["weather"][0]["icon"],
+    }
+
+    return weather

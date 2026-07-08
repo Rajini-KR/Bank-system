@@ -1,20 +1,22 @@
 class BankAccount:
-    def __init__(self,account_number,account_name,balance):
-        self.account_number=account_number
-        self.account_name=account_name
-        self.balance=balance
+    def __init__(self, account_no, account_name, balance):
+        self.account_no = account_no
+        self.account_name = account_name
+        self.balance = float(balance)
 
-    def deposit(self,amt):
-        if amt<0:
+    def deposit(self, amount):
+        amount = float(amount)
+        if amount <= 0:
             return False
-        self.balance+=amt
+        self.balance += amount
         return True
 
-    def withdraw(self,amt):
-        if amt<0 or amt>self.balance:
+    def withdraw(self, amount):
+        amount = float(amount)
+        if amount <= 0 or amount > self.balance:
             return False
-        self.balance-=amt
+        self.balance -= amount
         return True
 
-    def get_details():
-        return(self.account_number,self.account_name,self.balance)
+    def get_details(self):
+        return (self.account_no, self.account_name, self.balance)
