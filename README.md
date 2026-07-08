@@ -18,3 +18,7 @@ GUI Framework: Tkinter
 Concepts: Object-Oriented Programming (OOP)
 Database/Storage: File handling (or SQLite, if you used it)
 IDE: VS Code
+
+
+
+![image alt](https://github.com/Rajini-KR/Bank-system/blob/b34581d5b32bb0471662cf973b239f36f973dc41/Screenshot%202026-07-08%20194312.png)
