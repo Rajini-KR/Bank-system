@@ -30,6 +30,9 @@ IDE: VS Code
 
 **Commands Used:**
 python --version
+
 python -m venv venv
+
 venv\Scripts\activate
+
 python main.py runserver
