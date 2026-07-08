@@ -18,6 +18,7 @@ GUI Framework: Tkinter
 Concepts: Object-Oriented Programming (OOP)
 Database/Storage: File handling (or SQLite, if you used it)
 IDE: VS Code
+
 Dashboard Images
 
 
