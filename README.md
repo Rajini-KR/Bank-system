@@ -1,0 +1,20 @@
+**Bank Management System (Project Description)**
+
+**About the Project:**
+Developed a Bank Management System using Python and the Tkinter library to manage basic banking operations through a user-friendly graphical interface. The application enables users to securely perform common banking tasks while maintaining customer account information.
+
+**Key Features**
+User login and authentication.
+Create new bank accounts.
+Deposit and withdraw money.
+Check account balance.
+Transfer funds between accounts.
+View transaction history.
+Simple and interactive GUI using Tkinter.
+
+**Technologies Used**
+Programming Language: Python
+GUI Framework: Tkinter
+Concepts: Object-Oriented Programming (OOP)
+Database/Storage: File handling (or SQLite, if you used it)
+IDE: VS Code
